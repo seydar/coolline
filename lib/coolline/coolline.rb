@@ -178,6 +178,14 @@ class Coolline
   # @return [Menu]
   attr_accessor :menu
 
+  # Reads a character from the input. No terminal newline is needed.
+  # This method is better than a plane `@input.getch` because IO#getch
+  # doesn't read characters that were already buffered.
+  # Credit goes to Eric Hodel (drbrain) for figuring this out.
+  def read_char
+    @input.raw { @input.getc }
+  end
+
   # Reads a line from the terminal
   # @param [String] prompt Characters to print before each line
   def readline(prompt = ">> ")
@@ -199,7 +207,7 @@ class Coolline
     @history.index = @history.size - 1
     @history << @line
 
-    until (char = @input.getch) == "\r"
+    until (char = read_char) == "\r"
       @menu.erase
 
       handle(char)

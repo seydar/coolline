@@ -197,8 +197,6 @@ class Coolline
     @pos         = 0
     @accumulator = nil
 
-    @history_moved = false
-
     @should_exit = false
 
     reset_line
@@ -212,10 +210,6 @@ class Coolline
 
       handle(char)
       return if @should_exit
-
-      if @history_moved
-        @history_moved = false
-      end
 
       render
     end
@@ -283,7 +277,6 @@ class Coolline
       @history.index -= 1
     end
 
-    @history_moved = true
     end_of_line
   end
 
@@ -292,7 +285,6 @@ class Coolline
     @history.index = 0
     @line.replace @history[0]
 
-    @history_moved = true
     end_of_line
   end
 
@@ -309,8 +301,6 @@ class Coolline
       @history.index = @history.size - 2
     end
 
-    @history_moved = true
-
     end_of_line
   end
 
@@ -319,7 +309,6 @@ class Coolline
     @history.index = @history.size - 2
     @line.replace @history[@history.index]
 
-    @history_moved = true
     end_of_line
   end
 
@@ -356,7 +345,6 @@ class Coolline
     @pos = [@line.size, @pos].min
 
     @history.index = found_index
-    @history_moved = true
   end
 
   def kill_current_char_or_leave
